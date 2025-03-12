@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/data/image_path.dart';
+
 import 'package:weather_app/services/location_provider.dart';
 import 'package:weather_app/services/weatherservice_provider.dart';
 import 'package:weather_app/utils/apptext.dart';
@@ -88,19 +89,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child: Stack(
                 children: [
-                  // Positioned(
-                  //   top: 50,
-                  //   left: 20,
-                  //   right: 20,
-                  //   child: TextField(
-                  //     decoration: InputDecoration(
-                  //       enabledBorder: UnderlineInputBorder(
-                  //           borderSide: BorderSide(color: Colors.white)),
-                  //       focusedBorder: UnderlineInputBorder(
-                  //           borderSide: BorderSide(color: Colors.white)),
-                  //     ),
-                  //   ),
-                  // ),
                   Container(
                     height: 50,
                     child: Consumer<LocationProvider>(
@@ -114,35 +102,80 @@ class _HomeScreenState extends State<HomeScreen> {
                       }
 
                       return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
+                            width: 270,
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Icon(
-                                  Icons.location_pin,
-                                  color: Colors.red,
-                                ),
-                                SizedBox(
-                                  width: 8,
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                Row(
                                   children: [
-                                    ApppText(
-                                      data: placename,
-                                      color: Colors.white,
-                                      fw: FontWeight.bold,
-                                      size: 20,
+                                    Icon(
+                                      Icons.location_pin,
+                                      color: Colors.red,
                                     ),
-                                    ApppText(
-                                      data: 'Current Location',
-                                      color: Colors.white,
-                                      size: 14,
-                                    )
+                                    //
+
+                                    //
+                                    Row(
+                                      children: [
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            ApppText(
+                                              data:
+                                                  weatherprovider.weather!.name,
+                                              color: Colors.white,
+                                              fw: FontWeight.bold,
+                                              size: 20,
+                                            ),
+                                            ApppText(
+                                              data: DateFormat("hh:mm a")
+                                                  .format(DateTime.now()),
+                                              color: Colors.white,
+                                              size: 14,
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ],
                                 ),
+                                IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        final locationProvider =
+                                            Provider.of<LocationProvider>(
+                                                context,
+                                                listen: false);
+
+                                        locationProvider
+                                            .detectPosition()
+                                            .then((_) {
+                                          if (locationProvider
+                                                  .currentLocationName !=
+                                              null) {
+                                            var city = locationProvider
+                                                .currentLocationName!.locality;
+                                            if (city != null) {
+                                              Provider.of<WeatherserviceProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .fetchWeatherDataByCity(city);
+                                              placename = city;
+                                            }
+                                          }
+                                        });
+
+                                        // Ensure that the UI is notified to rebuild
+                                        weatherprovider.notifyListeners();
+                                        locationProvider.notifyListeners();
+                                      });
+                                    },
+                                    icon: Icon(Icons.refresh))
                               ],
                             ),
                           ),
@@ -186,20 +219,20 @@ class _HomeScreenState extends State<HomeScreen> {
                             fw: FontWeight.w600,
                             size: 26,
                           ),
-                          ApppText(
-                            data: weatherprovider.weather!.name ?? "N/A",
-                            color: Colors.white,
-                            fw: FontWeight.w600,
-                            size: 20,
-                          ),
-                          ApppText(
-                            data:
-                                //using the intl package we format the time to more hunman readeble
-                                DateFormat("hh:mm a").format(DateTime.now()),
-                            color: Colors.white,
-                            size: 15,
-                            fw: FontWeight.w600,
-                          ),
+                          // ApppText(
+                          //   data: weatherprovider.weather!.name ?? "N/A",
+                          //   color: Colors.white,
+                          //   fw: FontWeight.w600,
+                          //   size: 20,
+                          // ),
+                          // ApppText(
+                          //   data:
+                          //       //using the intl package we format the time to more hunman readeble
+                          //       DateFormat("hh:mm a").format(DateTime.now()),
+                          //   color: Colors.white,
+                          //   size: 15,
+                          //   fw: FontWeight.w600,
+                          // ),
                         ],
                       ),
                     ),
@@ -227,6 +260,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           onPressed: () {
                             weatherprovider
                                 .fetchWeatherDataByCity(citycontroller.text);
+
+                            citycontroller.clear();
+                            FocusScope.of(context).unfocus();
                           },
                           icon:
                               Icon(Icons.search), // You can customize the color
