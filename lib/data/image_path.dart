@@ -1,0 +1,38 @@
+Map<String, dynamic> backgrounds = {
+  "default": "assets/img/front1.jpg",
+  "Snow": "assets/img/Snow.jpg",
+  "Clear": "assets/img/front2.jpg",
+  "Clouds": "assets/img/cloudy2.jpg",
+  "Mist": "assets/img/Mist.jpg",
+  "Thunderstorm": "assets/img/Thunderstorm.jpg",
+  "Rain": "assets/img/rain3.jpg",
+  "Torndo": "assets/img/Torndo.jpg",
+  "Squall": "assets/img/Squall.jpg",
+  "Haze": "assets/img/Haze.jpg",
+  "Dust": "assets/img/Dust.jpg",
+  "Fog": "assets/img/Fog.jpg",
+  "Drizzle": "assets/img/Drizzle.jpg",
+
+  // "night": "assets/img/night1.jpg",
+  // "front3": "assets/img/front3.jpg",
+  // "cloud3": "assets/img/cloud3.jpg",
+  // "cloudy1": "assets/img/cloudy1.jpg",
+  // "night2": "assets/img/night2.jpg",
+  // "night3": "assets/img/night3.jpg",
+};
+
+Map<String, dynamic> icons = {
+  "default": "assets/img/default.png",
+  "Clear": "assets/img/sunny.png",
+  "Clouds": "assets/img/cloudy.png",
+  "Rain": "assets/img/rain2.png",
+  "Mist": "assets/img/mist.png",
+  "Fog": "assets/img/MistFogHazeDust.png",
+  "Haze": "assets/img/MistFogHazeDust.png",
+  "Dust": "asset/img/MistFogHazeDust.png",
+  "Thunderstorm": "assets/img/Thunderstorm.png",
+  "Squall": "assets/img/Squall.png",
+  "Snow": "assets/img/Snow1.png",
+  "Drizzle": "asset/img/Drizzle.png",
+  "Tornado": "assets/img/Thunderstorm.png",
+};
